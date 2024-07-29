@@ -3,7 +3,7 @@ html, body {
     height: 100%;
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #71b7e6, #9b59b6);
+    background: linear-gradient(135deg, #ffffff, #ffffff);
 }
 
 body {
@@ -39,7 +39,7 @@ body {
 .text {
     font-size: 3rem;
     font-weight: 800;
-    color: #fff;
+    color: #000000;
     margin: 70px 0;
     text-align: center;
 }
@@ -113,7 +113,7 @@ body {
 .refBtn, .closeBtn, .minimizeBtn {
     background: none;
     border: none;
-    color: #ff0000;
+    color: #0e7ce4;
     font-size: 30px;
     cursor: pointer;
     margin-left: 10px;
@@ -154,22 +154,17 @@ body {
 /* Seçenekler için stil ayarları */
 .opt {
     padding: 10px 20px;
-    border: 1px solid #9b59b6;
+    border: 1px solid #3498db;
     border-radius: 20px;
     margin: 0.3rem;
     display: inline-block;
     cursor: pointer;
     font-weight: 500;
-    background: #fff;
+    background: #ffffff;
     text-align: center;
     font-size: 14px;
-    color: #9b59b6;
+    color: #3498db;
     transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.opt:hover {
-    background: #9b59b6;
-    color: #fff;
 }
 
 /* Bağlantılar için stil ayarları */
@@ -258,4 +253,37 @@ body {
         opacity: 0;
         transform: scale(0);
     }
+}
+
+/* Sohbet baloncuğu için stil */
+.chat-bubble {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 70px;
+    height: 70px;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.chat-bubble:hover {
+    background-color: #2980b9;
+}
+
+.chat-icon {
+    width: 84px;
+    height: 84px;
+}
+
+/* Sohbet kutusunun konumunu ayarlamak için */
+#test {
+    position: fixed;
+    bottom: 1px;
+    right: 2rem;
+    display: none;
 }

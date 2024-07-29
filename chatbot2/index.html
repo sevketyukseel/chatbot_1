@@ -9,20 +9,33 @@
     <link rel="stylesheet" href="./index.css">
     <!-- font awesome icon cdn-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyCytHrEJD9l-bOJFX0Y9GCADHRDRRpYSRc",
+            authDomain: "chatbot-a41f3.firebaseapp.com",
+            projectId: "chatbot-a41f3",
+            storageBucket: "chatbot-a41f3.appspot.com",
+            messagingSenderId: "17112589052",
+            appId: "1:17112589052:web:b18a7a556ca91901ff2d79",
+            measurementId: "G-XDRHQML14T"
+        };
+        firebase.initializeApp(firebaseConfig);
+    </script>
 </head>
 <body>
     <div class="parent">
         <div class="desc">
             <h1 class="text">Seytim Chatbot</h1>
-            <button id="init">START CHAT</button>
         </div>
     </div>
-    <div id="test" style="position: fixed; bottom: 4rem; right: 2rem; display: none;">
+    <div id="test" style="position: fixed; bottom: 6rem; right: 2rem; display: none;">
         <div class="child" id="chatbot">
             <div class="header">
                 <div class="h-child">
                     <!-- Avatar resmi yolu -->
-                    <img src="./chatbot.png" alt="avatar" id="avatar">
+                    <img src="robot.png" alt="avatar" id="avatar">
                     <div>
                         <span class="name">SeyBot</span>
                         <br>
@@ -44,6 +57,10 @@
                 </button>
             </div>
         </div>
+    </div>
+    <!-- Sohbet baloncuğu -->
+    <div id="chat-bubble" class="chat-bubble">
+        <img src="robot.png" alt="Chat Icon" class="chat-icon"> 
     </div>
     <!-- js file  -->
     <script src="./index.js"></script>

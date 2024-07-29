@@ -1,43 +1,71 @@
 var data = {
     chatinit: {
-        title: ["Merhaba <span class='emoji'> &#128075;</span>", "Ben SeyBot", "Merhaba, sohbete başlamadan önce <a href='https://aydinlatma.seyhan.bel.tr:444/ar/?aref=8F83630A-A983-4AE0-B375-B16DE7EE8373'>KVKK</a>  aydınlatma metnini okuyup anladığınıza dair sizden onay almam gerekiyor. Onay veriyor musunuz?."],
+        title: ["Merhaba <span class='emoji'> &#128075;</span>", "Ben SeyBot", "Merhaba, sohbete başlamadan önce <a href='https://aydinlatma.seyhan.bel.tr:444/ar/?aref=8F83630A-A983-4AE0-B375-B16DE7EE8373'>KVKK</a> aydınlatma metnini okuyup anladığınıza dair sizden onay almam gerekiyor. Onay veriyor musunuz?."],
         options: ["Kabul Ediyorum", "Kabul Etmiyorum"],
     },
     kabul: {
-        title: ["Lütfen bir seçenek seçiniz:"],
-        options: ["WiFi", "Eğitimler", "İletişim"],
+        title: ["Size nasıl yardımcı olabilirim?"],
+        options: ["WiFi", "Eğitimler", "İletişim", "Staj","Randevu Al", "Randevularımı Sorgula", "Randevu İptal"],
     },
     kabulEtmiyorum: {
         title: ["KVKK metnini kabul etmeden size yardımcı olamam."],
         options: ["Kabul Ediyorum", "Kabul Etmiyorum"],
     },
     wifi: {
-        title: ["Wi-Fi'ye bağlanmak için:\n SEYHAN_BELEDİYESİ ağını seçin ve bağlanın.\n Açılan pencereden <a href='http://hs.seyhan.bel.tr/YeniKayit'>kayıt olun</a>.\n Giriş yaparak interneti kullanmaya başlayın. Sorun yaşarsanız teknik destek ekibimizle iletişime geçin."],
-        options: []
+        title: ["Wi-Fi'ye bağlanmak için: SEYHAN_BELEDİYESİ ağını seçin ve bağlanın. Açılan pencereden <a href='http://hs.seyhan.bel.tr/YeniKayit'>kayıt olun</a>. Giriş yaparak interneti kullanmaya başlayın. Sorun yaşarsanız teknik destek ekibimizle iletişime geçin.", "Başka bir isteğiniz var mı?"],
+        options: ["Evet", "Hayır"]
     },
     eğitimler: {
-        title: ["<a href='https://seytim.org/egitimler.php'>Eğitimler</a> hakkında bilgi almak için tıklayın."],
-        options: []
+        title: ["<a href='https://seytim.org/egitimler.php'>Eğitimler</a> hakkında bilgi almak için tıklayın.", "Başka bir isteğiniz var mı?"],
+        options: ["Evet", "Hayır"]
     },
     iletişim: {
-        title: ["<a href='https://seytim.org/iletisim.php'>İletişim</a> bilgilerine ulaşmak için tıklayın."],
-        options: []
+        title: ["<a href='https://seytim.org/iletisim.php'>İletişim</a> bilgilerine ulaşmak için tıklayın.", "Başka bir isteğiniz var mı?"],
+        options: ["Evet", "Hayır"]
+    },
+    staj: {
+        title: ["SEYTİM'de staj yapmak isteyen adaylar, Seyhan Belediyesi İnsan Kaynakları ve Eğitim Müdürlüğü ile iletişime geçmelidir. Detaylı bilgi ve başvuru süreçleri için lütfen İnsan Kaynakları ve Eğitim Müdürlüğü ile irtibata geçin.", "Başka bir isteğiniz var mı?"],
+        options: ["Evet", "Hayır"]
+    },
+    tekrar: {
+        title: ["Size başka nasıl yardımcı olabilirim?"],
+        options: ["WiFi", "Eğitimler", "İletişim", "Randevu Al", "Randevularımı Sorgula", "Randevu İptal"],
+    },
+    randevu: {
+        title: ["Hangi atölye veya cihazı kullanmak istiyorsunuz?"],
+        options: ["İmalat Atölyesi", "Elektrik Elektronik Atölyesi", "3D Yazıcı"],
+    },
+    tarih: {
+        title: ["Hangi tarihte randevu almak istersiniz? (YYYY-MM-DD)"],
+        options: [],
+    },
+    saat: {
+        title: ["Hangi saatte randevu almak istersiniz? (HH:MM)"],
+        options: [],
+    },
+    randevularimiSorgula: {
+        title: ["Randevularınızı sorguluyorum..."],
+        options: [],
+    },
+    randevuIptal: {
+        title: ["İptal etmek istediğiniz randevunun ID'sini girin."],
+        options: [],
     }
 };
 
-document.getElementById("init").addEventListener("click", showChatBot);
+document.getElementById("chat-bubble").addEventListener("click", toggleChatBot);
 document.getElementById("sendBtn").addEventListener("click", sendMessage);
 var cbot = document.getElementById("chat-box");
 
 var len1 = data.chatinit.title.length;
 
-function showChatBot() {
-    if (this.innerText == 'START CHAT') {
-        document.getElementById('test').style.display = 'block';
-        document.getElementById('init').innerText = 'CLOSE CHAT';
+function toggleChatBot() {
+    var chatWindow = document.getElementById('test');
+    if (chatWindow.style.display === 'none' || chatWindow.style.display === '') {
+        chatWindow.style.display = 'block';
         initChat();
     } else {
-        location.reload();
+        chatWindow.style.display = 'none';
     }
 }
 
@@ -48,8 +76,8 @@ function initChat() {
         setTimeout(handleChat, (i * 500));
     }
     setTimeout(function() {
-        showOptions(data.chatinit.options)
-    }, ((len1 + 1) * 500))
+        showOptions(data.chatinit.options);
+    }, ((len1 + 1) * 500));
 }
 
 function refreshChat() {
@@ -81,7 +109,7 @@ function showOptions(options) {
 function handleOpt() {
     var str = this.innerText;
     var tempObj;
-    
+
     switch (str) {
         case "Kabul Ediyorum":
             tempObj = data.kabul;
@@ -98,6 +126,27 @@ function handleOpt() {
         case "İletişim":
             tempObj = data.iletişim;
             break;
+        case "Staj":
+            tempObj = data.staj;
+            break;
+        case "Evet":
+            tempObj = data.tekrar;
+            break;
+        case "Hayır":
+            tempObj = { title: ["Teşekkürler! Size yardımcı olabileceğim başka bir şey yoksa hoşçakalın!"], options: [] };
+            break;
+        case "Randevu Al":
+            tempObj = data.randevu;
+            break;
+        case "Randevularımı Sorgula":
+            tempObj = data.randevularimiSorgula;
+            queryAppointments();
+            return;
+        case "Randevu İptal":
+            tempObj = data.randevuIptal;
+            break;
+        default:
+            return;
     }
 
     document.querySelectorAll(".opt").forEach(el => {
@@ -124,11 +173,11 @@ function handleResults(title, options) {
     for (let i = 0; i < title.length; i++) {
         setTimeout(function() {
             handleDelay(title[i]);
-        }, i * 500)
+        }, i * 500);
     }
     setTimeout(function() {
         showOptions(options);
-    }, title.length * 500)
+    }, title.length * 500);
 }
 
 function handleScroll() {
@@ -146,4 +195,66 @@ function sendMessage() {
         handleScroll();
         document.getElementById('userInput').value = '';
     }
+}
+
+// Firestore bağlantısı
+const firestore = firebase.firestore();
+
+function checkAvailabilityAndBook(appointmentData) {
+    const { workshopOrEquipment, date, time } = appointmentData;
+
+    // Aynı tarih ve saatte mevcut bir randevu var mı kontrol et
+    firestore.collection('appointments')
+        .where('workshopOrEquipment', '==', workshopOrEquipment)
+        .where('date', '==', date)
+        .where('time', '==', time)
+        .get()
+        .then(snapshot => {
+            if (snapshot.empty) {
+                // Müsait, randevuyu kaydet
+                firestore.collection('appointments').add(appointmentData)
+                    .then(() => {
+                        chatbot.sendMessage('Randevunuz başarıyla ayarlandı!');
+                    })
+                    .catch(error => {
+                        chatbot.sendMessage('Randevu ayarlanırken bir hata oluştu: ' + error.message);
+                    });
+            } else {
+                // Meşgul, alternatif zamanlar sun
+                chatbot.sendMessage('Seçtiğiniz zaman dolu. Lütfen başka bir zaman seçin.');
+            }
+        })
+        .catch(error => {
+            chatbot.sendMessage('Müsaitlik kontrol edilirken bir hata oluştu: ' + error.message);
+        });
+}
+
+function queryAppointments() {
+    var userId = "user_id"; // Kullanıcının ID'sini alın
+    firestore.collection('appointments')
+        .where('user_id', '==', userId)
+        .get()
+        .then(snapshot => {
+            if (!snapshot.empty) {
+                snapshot.forEach(doc => {
+                    let appointment = doc.data();
+                    chatbot.sendMessage(`Randevunuz: ${appointment.workshopOrEquipment} - ${appointment.date} - ${appointment.time}`);
+                });
+            } else {
+                chatbot.sendMessage('Hiç randevunuz yok.');
+            }
+        })
+        .catch(error => {
+            chatbot.sendMessage('Randevu sorgularken bir hata oluştu: ' + error.message);
+        });
+}
+
+function cancelAppointment(appointmentId) {
+    firestore.collection('appointments').doc(appointmentId).delete()
+        .then(() => {
+            chatbot.sendMessage('Randevunuz başarıyla iptal edildi.');
+        })
+        .catch(error => {
+            chatbot.sendMessage('Randevu iptal edilirken bir hata oluştu: ' + error.message);
+        });
 }
