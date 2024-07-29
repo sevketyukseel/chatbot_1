@@ -113,14 +113,14 @@ body {
 .refBtn, .closeBtn, .minimizeBtn {
     background: none;
     border: none;
-    color: #0e7ce4;
+    color: #3498db;
     font-size: 30px;
     cursor: pointer;
     margin-left: 10px;
 }
 
 .refBtn:hover, .closeBtn:hover, .minimizeBtn:hover {
-    color: #3498db;
+    color: #0e7ce4;
 }
 
 /* Mesaj stilleri */
@@ -132,6 +132,19 @@ body {
     font-size: 14px;
     margin: 10px 0;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.user-msg {
+    background: #ffffff;
+    color: #000000;
+    align-self: flex-end;
+    padding: 10px 15px;
+    border-radius: 20px;
+    width: max-content;
+    max-width: 70%;
+    font-size: 14px;
+    margin: 10px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .msg {
@@ -165,6 +178,11 @@ body {
     font-size: 14px;
     color: #3498db;
     transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.opt:hover {
+    background-color: #3498db;
+    color: #ffffff;
 }
 
 /* Bağlantılar için stil ayarları */

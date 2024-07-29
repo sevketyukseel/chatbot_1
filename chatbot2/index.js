@@ -5,7 +5,7 @@ var data = {
     },
     kabul: {
         title: ["Size nasıl yardımcı olabilirim?"],
-        options: ["WiFi", "Eğitimler", "İletişim", "Staj","Randevu Al", "Randevularımı Sorgula", "Randevu İptal"],
+        options: ["WiFi", "Eğitimler", "İletişim", "Staj", "Randevu Al", "Randevularımı Sorgula", "Randevu İptal"],
     },
     kabulEtmiyorum: {
         title: ["KVKK metnini kabul etmeden size yardımcı olamam."],
@@ -36,12 +36,12 @@ var data = {
         options: ["İmalat Atölyesi", "Elektrik Elektronik Atölyesi", "3D Yazıcı"],
     },
     tarih: {
-        title: ["Hangi tarihte randevu almak istersiniz? (YYYY-MM-DD)"],
-        options: [],
+        title: ["Hangi tarihte randevu almak istersiniz?"],
+        options: [], // Tarih seçenekleri dinamik olarak eklenecek
     },
     saat: {
-        title: ["Hangi saatte randevu almak istersiniz? (HH:MM)"],
-        options: [],
+        title: ["Hangi saatte randevu almak istersiniz?"],
+        options: ["10:00", "14:00", "16:00"],
     },
     randevularimiSorgula: {
         title: ["Randevularınızı sorguluyorum..."],
@@ -55,6 +55,12 @@ var data = {
 
 document.getElementById("chat-bubble").addEventListener("click", toggleChatBot);
 document.getElementById("sendBtn").addEventListener("click", sendMessage);
+document.getElementById('userInput').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
+});
+
 var cbot = document.getElementById("chat-box");
 
 var len1 = data.chatinit.title.length;
@@ -137,6 +143,7 @@ function handleOpt() {
             break;
         case "Randevu Al":
             tempObj = data.randevu;
+            currentStep = 'selectWorkshop';
             break;
         case "Randevularımı Sorgula":
             tempObj = data.randevularimiSorgula;
@@ -146,7 +153,23 @@ function handleOpt() {
             tempObj = data.randevuIptal;
             break;
         default:
-            return;
+            if (currentStep === 'selectWorkshop') {
+                appointmentData.workshopOrEquipment = str;
+                generateDateOptions(); // Tarih seçeneklerini dinamik olarak oluştur
+                tempObj = data.tarih;
+                currentStep = 'selectDate';
+            } else if (currentStep === 'selectDate') {
+                appointmentData.date = str;
+                tempObj = data.saat;
+                currentStep = 'selectTime';
+            } else if (currentStep === 'selectTime') {
+                appointmentData.time = str;
+                appointmentData.id = generateUUID(); // Randevu ID'si oluştur
+                checkAvailabilityAndBook(appointmentData);
+                return;
+            } else {
+                return;
+            }
     }
 
     document.querySelectorAll(".opt").forEach(el => {
@@ -188,11 +211,16 @@ function handleScroll() {
 function sendMessage() {
     var userInput = document.getElementById('userInput').value.trim();
     if (userInput !== "") {
+        // Kullanıcı mesajını chat kutusuna ekle
         var elm = document.createElement("p");
         elm.innerHTML = userInput;
         elm.setAttribute("class", "user-msg");
         cbot.appendChild(elm);
+
+        // Mesaj kutusunu aşağı kaydır
         handleScroll();
+
+        // Mesaj giriş alanını temizle
         document.getElementById('userInput').value = '';
     }
 }
@@ -200,8 +228,22 @@ function sendMessage() {
 // Firestore bağlantısı
 const firestore = firebase.firestore();
 
+var appointmentData = {}; // Randevu bilgilerini saklamak için bir nesne
+var currentStep = ''; // Mevcut adımı saklamak için bir değişken
+
+function generateDateOptions() {
+    var dateOptions = [];
+    var currentDate = new Date();
+    for (var i = 0; i < 7; i++) {
+        currentDate.setDate(currentDate.getDate() + 1);
+        var dateStr = currentDate.toISOString().split('T')[0];
+        dateOptions.push(dateStr);
+    }
+    data.tarih.options = dateOptions;
+}
+
 function checkAvailabilityAndBook(appointmentData) {
-    const { workshopOrEquipment, date, time } = appointmentData;
+    const { workshopOrEquipment, date, time, id } = appointmentData;
 
     // Aynı tarih ve saatte mevcut bir randevu var mı kontrol et
     firestore.collection('appointments')
@@ -212,20 +254,20 @@ function checkAvailabilityAndBook(appointmentData) {
         .then(snapshot => {
             if (snapshot.empty) {
                 // Müsait, randevuyu kaydet
-                firestore.collection('appointments').add(appointmentData)
+                firestore.collection('appointments').doc(id).set(appointmentData)
                     .then(() => {
-                        chatbot.sendMessage('Randevunuz başarıyla ayarlandı!');
+                        handleResults(["Randevunuz başarıyla ayarlandı! Randevu ID'niz: " + id], ["Evet", "Hayır"]);
                     })
                     .catch(error => {
-                        chatbot.sendMessage('Randevu ayarlanırken bir hata oluştu: ' + error.message);
+                        handleResults(['Randevu ayarlanırken bir hata oluştu: ' + error.message], ["Evet", "Hayır"]);
                     });
             } else {
                 // Meşgul, alternatif zamanlar sun
-                chatbot.sendMessage('Seçtiğiniz zaman dolu. Lütfen başka bir zaman seçin.');
+                handleResults(['Seçtiğiniz zaman dolu. Lütfen başka bir zaman seçin.'], ["Evet", "Hayır"]);
             }
         })
         .catch(error => {
-            chatbot.sendMessage('Müsaitlik kontrol edilirken bir hata oluştu: ' + error.message);
+            handleResults(['Müsaitlik kontrol edilirken bir hata oluştu: ' + error.message], ["Evet", "Hayır"]);
         });
 }
 
@@ -238,23 +280,27 @@ function queryAppointments() {
             if (!snapshot.empty) {
                 snapshot.forEach(doc => {
                     let appointment = doc.data();
-                    chatbot.sendMessage(`Randevunuz: ${appointment.workshopOrEquipment} - ${appointment.date} - ${appointment.time}`);
+                    handleResults([`Randevunuz: ${appointment.workshopOrEquipment} - ${appointment.date} - ${appointment.time} - ID: ${appointment.id}`], ["Evet", "Hayır"]);
                 });
             } else {
-                chatbot.sendMessage('Hiç randevunuz yok.');
+                handleResults(['Hiç randevunuz yok.'], ["Evet", "Hayır"]);
             }
         })
         .catch(error => {
-            chatbot.sendMessage('Randevu sorgularken bir hata oluştu: ' + error.message);
+            handleResults(['Randevu sorgularken bir hata oluştu: ' + error.message], ["Evet", "Hayır"]);
         });
 }
 
 function cancelAppointment(appointmentId) {
     firestore.collection('appointments').doc(appointmentId).delete()
         .then(() => {
-            chatbot.sendMessage('Randevunuz başarıyla iptal edildi.');
+            handleResults(['Randevunuz başarıyla iptal edildi.'], ["Evet", "Hayır"]);
         })
         .catch(error => {
-            chatbot.sendMessage('Randevu iptal edilirken bir hata oluştu: ' + error.message);
+            handleResults(['Randevu iptal edilirken bir hata oluştu: ' + error.message], ["Evet", "Hayır"]);
         });
+}
+
+function generateUUID() {
+    return Math.floor(10000000 + Math.random() * 90000000).toString();
 }
