@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seytim Chatbot</title>
+    <!-- css file link -->
+    <link rel="stylesheet" href="./index.css">
+    <!-- font awesome icon cdn-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="parent">
+        <div class="desc">
+            <h1 class="text">Seytim Chatbot</h1>
+            <button id="init">START CHAT</button>
+        </div>
+    </div>
+    <div id="test" style="position: fixed; bottom: 4rem; right: 2rem; display: none;">
+        <div class="child" id="chatbot">
+            <div class="header">
+                <div class="h-child">
+                    <!-- Avatar resmi yolu -->
+                    <img src="./chatbot.png" alt="avatar" id="avatar">
+                    <div>
+                        <span class="name">SeyBot</span>
+                        <br>
+                        <span style="color:lawngreen">online</span>
+                    </div>
+                </div>
+                <button class="refBtn" onclick="refreshChat()"><i class="fa fa-refresh"></i></button>
+            </div>
+
+            <div id="chat-box"></div>
+
+            <div class="message-container">
+                <input type="text" class="message-input" id="userInput" placeholder="Type a message">
+                <button class="send-button" id="sendBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M2 21l21-9-21-9v7l15 2-15 2z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- js file  -->
+    <script src="./index.js"></script>
+</body>
+</html>

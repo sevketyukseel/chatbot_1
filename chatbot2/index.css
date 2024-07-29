@@ -1,0 +1,261 @@
+/* Genel stil ayarları */
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #71b7e6, #9b59b6);
+}
+
+body {
+    transition: 1s all ease-in-out;
+}
+
+/* Başlatma butonunun stilleri */
+#init {
+    margin-top: 2rem;
+    background: #e74c3c;
+    border: none;
+    padding: 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#init:hover {
+    background: #c0392b;
+}
+
+/* Açıklama paragrafı için renk ve font ağırlığı */
+.desc p {
+    color: #ecf0f1;
+    margin: 0;
+    font-weight: 600;
+}
+
+/* Başlık metni için stil ayarları */
+.text {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #fff;
+    margin: 70px 0;
+    text-align: center;
+}
+
+/* Ana kapsayıcı için stil ayarları */
+.parent {
+    position: relative;
+    height: 50%;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* Çocuk kapsayıcı için stil ayarları */
+.child {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    border-radius: 20px;
+    height: 35rem;
+    width: 25rem;
+    margin: auto;
+    background: #fff;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: fadeIn 0.5s;
+}
+
+/* Header için stil ayarları */
+.header {
+    display: flex;
+    align-items: center;
+    background: #2c3e50;
+    width: 90%;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    color: #ecf0f1;
+    justify-content: space-between;
+    position: relative;
+}
+
+.header .h-child {
+    display: flex;
+    align-items: center;
+}
+
+.header img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 2px solid #ecf0f1;
+}
+
+.header span {
+    font-size: 16px;
+}
+
+/* Chat kutusu için stil ayarları */
+#chat-box {
+    flex: 1;
+    padding: 15px;
+    font-size: 14px;
+    background: #ecf0f1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.refBtn, .closeBtn, .minimizeBtn {
+    background: none;
+    border: none;
+    color: #ff0000;
+    font-size: 30px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.refBtn:hover, .closeBtn:hover, .minimizeBtn:hover {
+    color: #3498db;
+}
+
+/* Mesaj stilleri */
+.msg, .rep {
+    padding: 10px 15px;
+    border-radius: 20px;
+    width: max-content;
+    max-width: 70%;
+    font-size: 14px;
+    margin: 10px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.msg {
+    background: #3498db;
+    color: #ffffff;
+    align-self: flex-start;
+}
+
+.rep {
+    background: #ffffff;
+    color: #2c3e50;
+    align-self: flex-end;
+}
+
+.test {
+    text-align: right;
+    margin: 20px 0;
+}
+
+/* Seçenekler için stil ayarları */
+.opt {
+    padding: 10px 20px;
+    border: 1px solid #9b59b6;
+    border-radius: 20px;
+    margin: 0.3rem;
+    display: inline-block;
+    cursor: pointer;
+    font-weight: 500;
+    background: #fff;
+    text-align: center;
+    font-size: 14px;
+    color: #9b59b6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.opt:hover {
+    background: #9b59b6;
+    color: #fff;
+}
+
+/* Bağlantılar için stil ayarları */
+.link {
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    color: #fff !important;
+    background: #8e44ad;
+    padding: 10px;
+    border-radius: 20px;
+    margin: 10px 0;
+    transition: background-color 0.3s ease;
+}
+
+.link:active {
+    background: #fff;
+    border: 1px solid #8e44ad;
+    color: #8e44ad;
+}
+
+/* Mesaj yazma kutusu ve gönder butonu için stil ayarları */
+.message-container {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+    padding: 10px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Yazı yazma alanı (input) */
+.message-input {
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 10px;
+    font-size: 16px;
+    flex: 1;
+    margin-right: 10px;
+}
+
+/* Gönder butonu */
+.send-button {
+    background-color: #2ecc71;
+    border: none;
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    transition: background-color 0.3s ease;
+}
+
+.send-button:hover {
+    background-color: #27ae60;
+}
+
+.send-button svg {
+    fill: #fff;
+}
+
+/* Animasyonlar */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0);
+    }
+}
